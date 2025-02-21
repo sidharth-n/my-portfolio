@@ -109,7 +109,7 @@ const Hero: React.FC = () => {
 
             {/* Terminal Content */}
             <div className="font-mono space-y-4">
-              <div className="flex items-center space-x-2 text-primary mb-4 md:mb-6">
+              <div className="flex items-center space-x-2 text-primary mb-4 md:mb-6 justify-center">
                 <span className="text-primary/50">$</span>
                 <span
                   className="text-lg md:text-2xl lg:text-4xl break-words"

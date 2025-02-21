@@ -1,38 +1,45 @@
-import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Youtube, Newspaper, Award, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useRef } from "react"
+import { motion } from "framer-motion"
+import { useInView } from "react-intersection-observer"
+import {
+  Youtube,
+  Newspaper,
+  Award,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react"
 
 const Recognitions: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
-  });
+  })
 
   const recognitions = [
     {
-      type: 'news',
+      type: "news",
       title: `Ho ho ho! This X'mas, spread joy with personalised Santa greetings`,
-      source: 'The New Indian Express',
-      date: 'December 22, 2024',
-      link: 'https://www.newindianexpress.com/states/kerala/2024/Dec/22/ho-ho-ho-this-xmas-spread-joy-with-personalised-santa-greetings',
+      source: "The New Indian Express",
+      date: "December 22, 2024",
+      link: "https://www.newindianexpress.com/states/kerala/2024/Dec/22/ho-ho-ho-this-xmas-spread-joy-with-personalised-santa-greetings",
     },
     {
-      type: 'video',
-      title: 'Kerala Startup Mission CEO Recognition',
-      description: 'Acknowledged by Kerala Startup Mission CEO Anoop Ambika',
-      videoId: 'srvm0IYu12k',
-      link: 'https://youtu.be/srvm0IYu12k?si=KLhvCpnjzfn2_a5I',
+      type: "video",
+      title: "Kerala Startup Mission CEO Recognition",
+      description: "Acknowledged by Kerala Startup Mission CEO Anoop Ambika",
+      videoId: "srvm0IYu12k",
+      link: "https://youtu.be/srvm0IYu12k?si=KLhvCpnjzfn2_a5I",
     },
     {
-      type: 'video',
-      title: 'Kerala Industries Minister Acknowledgment',
-      description: 'Recognition from P. Rajeev, Minister for Industries',
-      videoId: 'AEGuDxrbX8E',
-      link: 'https://youtu.be/AEGuDxrbX8E?si=Rrv0IQleyfSIJK1W',
-    }
-  ];
+      type: "video",
+      title: "Kerala Industries Minister Acknowledgment",
+      description: "Recognition from P. Rajeev, Minister for Industries",
+      videoId: "AEGuDxrbX8E",
+      link: "https://youtu.be/AEGuDxrbX8E?si=Rrv0IQleyfSIJK1W",
+    },
+  ]
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -42,7 +49,7 @@ const Recognitions: React.FC = () => {
         staggerChildren: 0.2,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { x: 20, opacity: 0 },
@@ -50,35 +57,47 @@ const Recognitions: React.FC = () => {
       x: 0,
       opacity: 1,
     },
-  };
+  }
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (!containerRef.current) return;
+  const scroll = (direction: "left" | "right") => {
+    if (!containerRef.current) return
 
-    const container = containerRef.current;
-    const cardWidth = container.offsetWidth;
-    const scrollLeft = container.scrollLeft;
-    const scrollWidth = container.scrollWidth;
+    const container = containerRef.current
+    const cardWidth = container.offsetWidth
+    const scrollLeft = container.scrollLeft
+    const scrollWidth = container.scrollWidth
 
-    let targetScroll: number;
-    if (direction === 'left') {
-      targetScroll = Math.max(0, Math.floor(scrollLeft / cardWidth) * cardWidth - cardWidth);
+    let targetScroll: number
+    if (direction === "left") {
+      targetScroll = Math.max(
+        0,
+        Math.floor(scrollLeft / cardWidth) * cardWidth - cardWidth
+      )
     } else {
       targetScroll = Math.min(
         scrollWidth - cardWidth,
         Math.ceil(scrollLeft / cardWidth) * cardWidth + cardWidth
-      );
+      )
     }
 
     container.scrollTo({
       left: targetScroll,
-      behavior: 'smooth'
-    });
-  };
+      behavior: "smooth",
+    })
+  }
 
   return (
-    <section id="recognitions" className="section-padding relative overflow-hidden">
-      <div className="section-bg" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000")' }} />
+    <section
+      id="recognitions"
+      className="section-padding relative overflow-hidden"
+    >
+      <div
+        className="section-bg"
+        style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000")',
+        }}
+      />
       <div className="section-overlay" />
       <div className="section-glow" />
 
@@ -91,44 +110,66 @@ const Recognitions: React.FC = () => {
           className="space-y-12"
         >
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 gradient-text">Recognitions</h2>
+            <h2 className="text-4xl font-bold mb-4 gradient-text">
+              Recognitions
+            </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Honored by industry leaders and featured in prominent media for innovative AI solutions.
+              Honored by industry leaders and featured in prominent media for
+              innovative AI solutions.
             </p>
           </div>
 
           <div className="relative group">
-            {/* Scroll Buttons - Only visible on desktop */}
+            {/* Scroll Buttons - Desktop */}
             <button
-              onClick={() => scroll('left')}
+              onClick={() => scroll("left")}
               className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-dark/80 hover:bg-dark-light/80 text-primary p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
               <ChevronLeft size={24} />
             </button>
             <button
-              onClick={() => scroll('right')}
+              onClick={() => scroll("right")}
               className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-dark/80 hover:bg-dark-light/80 text-primary p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
               <ChevronRight size={24} />
             </button>
+
+            {/* Mobile Scroll Indicators */}
+            <div className="flex md:hidden justify-center gap-4 mb-4">
+              <button
+                onClick={() => scroll("left")}
+                className="flex items-center justify-center bg-dark/80 hover:bg-dark-light/80 text-primary p-3 rounded-full shadow-lg active:scale-95 transition-all duration-200"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <div className="flex items-center text-gray-400 text-sm">
+                Swipe to see more
+              </div>
+              <button
+                onClick={() => scroll("right")}
+                className="flex items-center justify-center bg-dark/80 hover:bg-dark-light/80 text-primary p-3 rounded-full shadow-lg active:scale-95 transition-all duration-200"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
 
             {/* Scrollable Container */}
             <div
               ref={containerRef}
               className="flex overflow-x-auto space-x-6 pb-6 snap-x snap-mandatory scroll-smooth scrollbar-hide"
               style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                WebkitOverflowScrolling: "touch",
               }}
             >
-              {recognitions.map((item) => (
+              {recognitions.map(item => (
                 <motion.div
                   key={item.title}
                   variants={itemVariants}
                   className="flex-none w-full md:w-[600px] snap-center bg-dark/80 backdrop-blur-sm rounded-xl overflow-hidden card-hover"
                 >
-                  {item.type === 'video' ? (
+                  {item.type === "video" ? (
                     <div className="relative pt-[56.25%]">
                       <iframe
                         className="absolute inset-0 w-full h-full"
@@ -139,16 +180,19 @@ const Recognitions: React.FC = () => {
                       />
                     </div>
                   ) : (
-                    <div className="relative h-48">
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-dark flex items-center justify-center">
-                        <Newspaper className="w-16 h-16 text-primary/50" />
-                      </div>
+                    <div className="relative pt-[56.25%]">
+                      <img
+                        src="/images/indianexpress.png"
+                        alt={item.title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
                     </div>
                   )}
-                  
+
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-3">
-                      {item.type === 'video' ? (
+                      {item.type === "video" ? (
                         <div className="bg-red-600 text-white px-3 py-1 rounded-full flex items-center space-x-1">
                           <Youtube size={16} />
                           <span className="text-sm">Video</span>
@@ -166,7 +210,9 @@ const Recognitions: React.FC = () => {
                       <p className="text-gray-300 mb-4">{item.description}</p>
                     )}
                     {item.source && (
-                      <div className="text-gray-400 mb-4">{item.source} • {item.date}</div>
+                      <div className="text-gray-400 mb-4">
+                        {item.source} • {item.date}
+                      </div>
                     )}
                     <a
                       href={item.link}
@@ -181,6 +227,18 @@ const Recognitions: React.FC = () => {
                 </motion.div>
               ))}
             </div>
+
+            {/* Mobile Scroll Progress Dots */}
+            <div className="flex md:hidden justify-center gap-2 mt-4">
+              {recognitions.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === 0 ? "bg-primary" : "bg-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
@@ -192,7 +250,7 @@ const Recognitions: React.FC = () => {
         }
       `}</style>
     </section>
-  );
-};
+  )
+}
 
-export default Recognitions;
+export default Recognitions
