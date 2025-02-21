@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Github, Linkedin, Twitter, FileDown } from "lucide-react"
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  FileDown,
+  MessageSquare,
+} from "lucide-react"
+import Demo from "./AiAssistant"
 
 const Hero: React.FC = () => {
   const [displayText, setDisplayText] = useState("")
   const [roleIndex, setRoleIndex] = useState(0)
   const [isTyping, setIsTyping] = useState(true)
   const [currentRole, setCurrentRole] = useState("")
+  const [showAssistant, setShowAssistant] = useState(false)
 
   const roles = ["AI Product Manager", "Front-End Developer"]
   const greeting = "Hello World! I'm Sid"
@@ -76,6 +84,14 @@ const Hero: React.FC = () => {
     return () => clearTimeout(timer)
   }, [roleIndex])
 
+  const handleAssistantClick = () => {
+    setShowAssistant(true)
+  }
+
+  const handleAssistantClose = () => {
+    setShowAssistant(false)
+  }
+
   return (
     <section
       id="hero"
@@ -138,6 +154,24 @@ const Hero: React.FC = () => {
               </motion.div>
             </div>
           </div>
+
+          {/* Talk to Assistant Button */}
+          {!showAssistant ? (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2.8, duration: 0.8 }}
+              onClick={handleAssistantClick}
+              className="flex items-center space-x-2 mx-auto px-6 py-3 bg-primary/10 rounded-full border border-primary/20 hover:bg-primary/20 transition-all duration-300"
+            >
+              <MessageSquare size={20} className="text-primary" />
+              <span className="text-primary">Talk to my Assistant</span>
+            </motion.button>
+          ) : (
+            <div className="max-w-4xl mx-auto">
+              <Demo onClose={handleAssistantClose} />
+            </div>
+          )}
 
           {/* Social Links */}
           <motion.div
