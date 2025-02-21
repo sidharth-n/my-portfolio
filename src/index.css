@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-900 text-gray-100 font-opensans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-montserrat;
+  }
+}
+
+@layer components {
+  .neon-border {
+    @apply border-2 border-cyan-500/50 shadow-[0_0_15px_rgba(34,211,238,0.5)];
+  }
+
+  .section-padding {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .card-hover {
+    @apply transition-transform duration-300 hover:scale-105 hover:shadow-xl;
+  }
+
+  .section-bg {
+    @apply absolute inset-0 bg-cover bg-center bg-fixed bg-no-repeat;
+  }
+
+  .section-overlay {
+    @apply absolute inset-0;
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.98));
+    backdrop-filter: blur(4px);
+  }
+
+  .section-glow {
+    @apply absolute inset-0;
+    background: radial-gradient(circle at center, rgba(34, 211, 238, 0.03) 0%, transparent 70%);
+  }
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-emerald-400;
+}
