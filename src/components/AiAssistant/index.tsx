@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import SimliOpenAI from "./SimliOpenAI"
 import DottedFace from "./Components/DottedFace"
+import { motion } from "framer-motion"
 
 interface avatarSettings {
   name: string
@@ -90,46 +91,43 @@ Always:
 Remember to be patient and encouraging, like a friendly Malayalam teacher in a local English coaching center. Make students comfortable using both languages while learning.`,
 }
 
-interface DemoProps {
-  onClose?: () => void
-}
-
-const Demo: React.FC<DemoProps> = ({ onClose }) => {
+const Demo: React.FC = () => {
   const [showDottedFace, setShowDottedFace] = useState(true)
-
-  const onStart = () => {
-    setShowDottedFace(false)
-  }
-
-  const handleClose = () => {
-    setShowDottedFace(true)
-    onClose?.()
-  }
 
   return (
     <div className="bg-transparent">
       <main className="flex items-center justify-center w-full">
         <div className="w-full">
-          <div className="bg-effect15White rounded-xl overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.6, duration: 0.8 }}
+            className="bg-effect15White rounded-xl overflow-hidden"
+          >
             <div className="relative w-full">
               {showDottedFace && (
-                <div className="w-full pt-[56.25%] relative">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 2.8, duration: 0.5 }}
+                  className="w-full pt-[40.25%] relative"
+                >
                   <div className="absolute inset-0 flex items-center justify-center">
                     <DottedFace />
                   </div>
-                </div>
+                </motion.div>
               )}
               <SimliOpenAI
                 openai_voice={avatar.openai_voice}
                 openai_model={avatar.openai_model}
                 simli_faceid={avatar.simli_faceid}
                 initialPrompt={avatar.initialPrompt}
-                onStart={onStart}
-                onClose={handleClose}
+                onStart={() => setShowDottedFace(false)}
+                onClose={() => setShowDottedFace(true)}
                 showDottedFace={showDottedFace}
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>

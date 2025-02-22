@@ -3,6 +3,7 @@ import { RealtimeClient } from "@openai/realtime-api-beta"
 import { SimliClient } from "simli-client"
 import VideoBox from "./Components/VideoBox"
 import cn from "./utils/TailwindMergeAndClsx"
+import { motion } from "framer-motion"
 
 import IconSparkleLoader from "./media/IconSparkleLoader"
 import { MessageSquare } from "lucide-react"
@@ -291,6 +292,76 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
   }
 
   /**
+   * Stops audio recording from the user's microphone
+   */
+  const stopRecording = useCallback(() => {
+    if (processorRef.current) {
+      processorRef.current.disconnect()
+      processorRef.current = null
+    }
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop())
+      streamRef.current = null
+    }
+    setIsRecording(false)
+    console.log("Audio recording stopped")
+  }, [])
+
+  /**
+   * Handles stopping the interaction, cleaning up resources and resetting states.
+   */
+  const handleStop = useCallback(() => {
+    console.log("Stopping interaction...")
+    setIsLoading(false)
+    setError("")
+    stopRecording()
+    setIsAvatarVisible(false)
+    simliClient?.close()
+    openAIClientRef.current?.disconnect()
+    if (audioContextRef.current) {
+      audioContextRef.current?.close()
+      audioContextRef.current = null
+    }
+    onClose()
+    console.log("Interaction stopped")
+  }, [stopRecording, onClose])
+
+  /**
+   * Simli Event listeners
+   */
+  const eventListenerSimli = useCallback(() => {
+    if (simliClient) {
+      simliClient?.on("connected", () => {
+        console.log("SimliClient connected")
+        initializeOpenAIClient()
+      })
+
+      simliClient?.on("disconnected", () => {
+        console.log("SimliClient disconnected")
+        openAIClientRef.current?.disconnect()
+        if (audioContextRef.current) {
+          audioContextRef.current?.close()
+        }
+      })
+    }
+  }, [initializeOpenAIClient])
+
+  // Add check for browser compatibility
+  const checkMediaDevices = useCallback(async () => {
+    if (!navigator?.mediaDevices?.getUserMedia) {
+      throw new Error("Your browser does not support audio recording")
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      stream.getTracks().forEach(track => track.stop())
+      return true
+    } catch (err) {
+      throw new Error("Microphone permission denied")
+    }
+  }, [])
+
+  /**
    * Starts audio recording from the user's microphone.
    */
   const startRecording = useCallback(async () => {
@@ -337,23 +408,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
   }, [])
 
   /**
-   * Stops audio recording from the user's microphone
-   */
-  const stopRecording = useCallback(() => {
-    if (processorRef.current) {
-      processorRef.current.disconnect()
-      processorRef.current = null
-    }
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop())
-      streamRef.current = null
-    }
-    setIsRecording(false)
-    console.log("Audio recording stopped")
-  }, [])
-
-  /**
-   * Handles the start of the interaction, initializing clients and starting recording.
+   * Handles the start of the interaction
    */
   const handleStart = useCallback(async () => {
     setIsLoading(true)
@@ -374,47 +429,6 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
     }
   }, [onStart])
 
-  /**
-   * Handles stopping the interaction, cleaning up resources and resetting states.
-   */
-  const handleStop = useCallback(() => {
-    console.log("Stopping interaction...")
-    setIsLoading(false)
-    setError("")
-    stopRecording()
-    setIsAvatarVisible(false)
-    simliClient?.close()
-    openAIClientRef.current?.disconnect()
-    if (audioContextRef.current) {
-      audioContextRef.current?.close()
-      audioContextRef.current = null
-    }
-    stopRecording()
-    onClose()
-    console.log("Interaction stopped")
-  }, [stopRecording])
-
-  /**
-   * Simli Event listeners
-   */
-  const eventListenerSimli = useCallback(() => {
-    if (simliClient) {
-      simliClient?.on("connected", () => {
-        console.log("SimliClient connected")
-        // Initialize OpenAI client
-        initializeOpenAIClient()
-      })
-
-      simliClient?.on("disconnected", () => {
-        console.log("SimliClient disconnected")
-        openAIClientRef.current?.disconnect()
-        if (audioContextRef.current) {
-          audioContextRef.current?.close()
-        }
-      })
-    }
-  }, [])
-
   return (
     <div className="flex flex-col w-full relative">
       {/* Video container */}
@@ -430,47 +444,74 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
       </div>
 
       {/* Controls container - now relative positioning */}
-      <div className="mt-4 px-4">
+      <div className="mt-10 px-4">
         <div className="max-w-md mx-auto">
           {!isAvatarVisible ? (
-            <button
+            <motion.button
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 3.0, duration: 0.5 }}
               onClick={handleStart}
               disabled={isLoading}
               className={cn(
-                "w-full h-[60px] disabled:bg-[#343434] disabled:text-white",
-                "disabled:hover:rounded-[100px] bg-simliblue text-white",
-                "py-3 px-6 rounded-[100px] transition-all duration-300",
-                "hover:text-black hover:bg-white hover:rounded-sm",
-                "flex justify-center items-center gap-2",
-                "shadow-lg"
+                "w-full h-[45px] disabled:bg-[#343434] disabled:text-white",
+                "bg-gradient-to-r from-primary/10 to-cyan-400/10",
+                "px-6 rounded-[100px] transition-all duration-300",
+                "hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]",
+                "hover:scale-[1.02]",
+                "flex justify-center items-center gap-3",
+                "border border-primary/30 backdrop-blur-sm",
+                "group relative overflow-hidden whitespace-nowrap",
+                "after:absolute after:inset-0",
+                "after:bg-gradient-to-r after:from-transparent after:via-white/5 after:to-transparent",
+                "after:animate-slide-slow",
+                "after:bg-[length:200%_100%]"
               )}
             >
               {isLoading ? (
-                <IconSparkleLoader className="h-[24px] animate-loader" />
+                <div className="flex items-center gap-3">
+                  <IconSparkleLoader className="h-[20px] animate-loader" />
+                  <span className="font-mono text-base text-primary tracking-wide">
+                    Connecting to Teza...
+                  </span>
+                </div>
               ) : (
                 <>
-                  <MessageSquare size={20} />
-                  <span className="font-abc-repro-mono font-bold text-lg">
-                    Start Conversation
+                  <MessageSquare
+                    size={18}
+                    className="text-primary group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <span className="font-mono text-base text-primary tracking-wide">
+                    Talk to my AI Assistant
                   </span>
                 </>
               )}
-            </button>
+            </motion.button>
           ) : (
-            <button
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
               onClick={handleStop}
               className={cn(
-                "w-full h-[60px] bg-red text-white",
-                "py-3 px-6 rounded-[100px] transition-all duration-300",
-                "hover:bg-white hover:text-black hover:rounded-sm",
-                "flex justify-center items-center",
-                "shadow-lg"
+                "w-full h-[45px]",
+                "bg-gradient-to-r from-primary/10 to-cyan-400/10",
+                "px-6 rounded-[100px] transition-all duration-300",
+                "hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]",
+                "hover:scale-[1.02]",
+                "flex justify-center items-center gap-3",
+                "border border-red-500/30 backdrop-blur-sm",
+                "group relative overflow-hidden whitespace-nowrap",
+                "after:absolute after:inset-0",
+                "after:bg-gradient-to-r after:from-transparent after:via-white/5 after:to-transparent",
+                "after:animate-slide-slow",
+                "after:bg-[length:200%_100%]"
               )}
             >
-              <span className="font-abc-repro-mono font-bold text-lg">
-                End Session
+              <span className="font-mono text-base text-red-500 tracking-wide">
+                Disconnect
               </span>
-            </button>
+            </motion.button>
           )}
         </div>
       </div>
