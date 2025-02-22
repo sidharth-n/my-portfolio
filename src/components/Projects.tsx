@@ -1,14 +1,14 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { ExternalLink, Github, Users, Eye, Award } from 'lucide-react';
-import { projects } from '../data/projects';
+import React from "react"
+import { motion } from "framer-motion"
+import { useInView } from "react-intersection-observer"
+import { ExternalLink, Github, Users, Eye, Award } from "lucide-react"
+import { projects } from "../data/projects"
 
 const Projects: React.FC = () => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
-  });
+  })
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -18,7 +18,7 @@ const Projects: React.FC = () => {
         staggerChildren: 0.2,
       },
     },
-  };
+  }
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -26,11 +26,17 @@ const Projects: React.FC = () => {
       y: 0,
       opacity: 1,
     },
-  };
+  }
 
   return (
     <section id="projects" className="section-padding relative overflow-hidden">
-      <div className="section-bg" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1465101162946-4377e57745c3?auto=format&fit=crop&q=80&w=2000")' }} />
+      <div
+        className="section-bg"
+        style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1465101162946-4377e57745c3?auto=format&fit=crop&q=80&w=2000")',
+        }}
+      />
       <div className="section-overlay" />
       <div className="section-glow" />
 
@@ -43,14 +49,16 @@ const Projects: React.FC = () => {
           className="space-y-12"
         >
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-4 gradient-text">Featured Projects</h2>
-            <p className="text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 gradient-text">
+              Featured Projects
+            </h2>
+            {/*   <p className="text-gray-300 max-w-2xl mx-auto">
               A showcase of innovative solutions that combine technical excellence with real-world impact.
-            </p>
+            </p> */}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project) => (
+            {projects.map(project => (
               <motion.div
                 key={project.title}
                 variants={itemVariants}
@@ -64,13 +72,13 @@ const Projects: React.FC = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-60" />
                 </div>
-                
+
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-2">{project.title}</h3>
                   <p className="text-gray-300 mb-4">{project.description}</p>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag) => (
+                    {project.tags.map(tag => (
                       <span
                         key={tag}
                         className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
@@ -101,7 +109,7 @@ const Projects: React.FC = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="flex space-x-3">
                       {project.links.github && (
                         <a
@@ -130,7 +138,7 @@ const Projects: React.FC = () => {
         </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Projects;
+export default Projects
