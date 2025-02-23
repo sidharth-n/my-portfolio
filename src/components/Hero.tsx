@@ -25,7 +25,7 @@ const Hero: React.FC = () => {
     github: "https://github.com/sidharth-n",
     twitter: "https://x.com/sid_ai_dev?s=21",
     linkedin: "https://www.linkedin.com/in/sidharth-n-52828b226",
-    cv: "/Sidharth_N_CV.pdf",
+    cv: "/resume/sidharth_resume_new.pdf",
   }
 
   // Typing animation for greeting
