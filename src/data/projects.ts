@@ -20,7 +20,7 @@ export const projects: Project[] = [
     title: "SantaCallingAI",
     description:
       "Voice-based AI Santa Claus interactive experience that reached users globally during the holiday season.",
-    image: "/images/indianexpress.png",
+    image: "/images/santa.jpg",
     stats: {
       views: "55k+",
       featured: "Indian Express",
@@ -30,7 +30,7 @@ export const projects: Project[] = [
       demo: "https://www.santacallingai.com",
     },
   },
-  {
+  /*   {
     title: "DialToAI",
     description:
       "Restaurant management voice AI system that handles orders and customer inquiries over phone calls.",
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     links: {
       demo: "https://www.dialtoai.com",
     },
-  },
+  }, */
   {
     title: "Voaiz.com",
     description:
@@ -110,8 +110,7 @@ export const projects: Project[] = [
   },
   {
     title: "Prettier Telegram Bot",
-    description:
-      "Text editing and enhancement bot with quick text editing capabilities.",
+    description: "Text editing and enhancement telegram bot powered by GPT",
     image: "/images/prettier.png",
     stats: {
       users: "500+",

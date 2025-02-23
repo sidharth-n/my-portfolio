@@ -26,16 +26,26 @@ const Recognitions: React.FC = () => {
       link: "https://www.newindianexpress.com/states/kerala/2024/Dec/22/ho-ho-ho-this-xmas-spread-joy-with-personalised-santa-greetings",
     },
     {
+      type: "news",
+      title: "Kerala Youth's AI-based Santa App Goes Global",
+      source: "Uni India",
+      date: "December 19, 2024",
+      link: "https://www.uniindia.com/kerala-youths-ai-based-santa-app-goes-global/south/news/3349665.html",
+    },
+    {
+      type: "news",
+      title: "Kerala Youth's AI-driven Santa App Achieves Global Recognition",
+      source: "Technopark Today",
+      date: "December 19, 2024",
+      link: "https://www.technoparktoday.com/kerala-youths-ai-based-santa-app-goes-global/",
+    },
+    {
       type: "video",
-      title: "Kerala Startup Mission CEO Recognition",
-      description: "Acknowledged by Kerala Startup Mission CEO Anoop Ambika",
       videoId: "srvm0IYu12k",
       link: "https://youtu.be/srvm0IYu12k?si=KLhvCpnjzfn2_a5I",
     },
     {
       type: "video",
-      title: "Kerala Industries Minister Acknowledgment",
-      description: "Recognition from P. Rajeev, Minister for Industries",
       videoId: "AEGuDxrbX8E",
       link: "https://youtu.be/AEGuDxrbX8E?si=Rrv0IQleyfSIJK1W",
     },
@@ -113,131 +123,66 @@ const Recognitions: React.FC = () => {
             <h2 className="text-4xl font-bold mb-4 gradient-text">
               Recognitions
             </h2>
-            <p className="text-gray-300 max-w-2xl mx-auto">
+            {/*     <p className="text-gray-300 max-w-2xl mx-auto">
               Honored by industry leaders and featured in prominent media for
               innovative AI solutions.
-            </p>
+            </p> */}
           </div>
 
-          <div className="relative group">
-            {/* Scroll Buttons - Desktop */}
-            <button
-              onClick={() => scroll("left")}
-              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-dark/80 hover:bg-dark-light/80 text-primary p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-dark/80 hover:bg-dark-light/80 text-primary p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <ChevronRight size={24} />
-            </button>
-
-            {/* Mobile Scroll Indicators */}
-            <div className="flex md:hidden justify-center gap-4 mb-4">
-              <button
-                onClick={() => scroll("left")}
-                className="flex items-center justify-center bg-dark/80 hover:bg-dark-light/80 text-primary p-3 rounded-full shadow-lg active:scale-95 transition-all duration-200"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <div className="flex items-center text-gray-400 text-sm">
-                Swipe to see more
-              </div>
-              <button
-                onClick={() => scroll("right")}
-                className="flex items-center justify-center bg-dark/80 hover:bg-dark-light/80 text-primary p-3 rounded-full shadow-lg active:scale-95 transition-all duration-200"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-
-            {/* Scrollable Container */}
-            <div
-              ref={containerRef}
-              className="flex overflow-x-auto space-x-6 pb-6 snap-x snap-mandatory scroll-smooth scrollbar-hide"
-              style={{
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                WebkitOverflowScrolling: "touch",
-              }}
-            >
-              {recognitions.map(item => (
-                <motion.div
+          {/* News Articles List */}
+          <div className="space-y-4">
+            {recognitions
+              .filter(item => item.type === "news")
+              .map(item => (
+                <div
                   key={item.title}
-                  variants={itemVariants}
-                  className="flex-none w-full md:w-[600px] snap-center bg-dark/80 backdrop-blur-sm rounded-xl overflow-hidden card-hover"
+                  className="flex items-start p-6 bg-gray-800 rounded-lg shadow-lg transition-transform transform hover:scale-105"
                 >
-                  {item.type === "video" ? (
-                    <div className="relative pt-[56.25%]">
-                      <iframe
-                        className="absolute inset-0 w-full h-full"
-                        src={`https://www.youtube.com/embed/${item.videoId}`}
-                        title={item.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
+                  <div className="mr-4">
+                    <Newspaper size={28} className="text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-1 text-white">
+                      {item.title}
+                    </h3>
+                    <div className="text-gray-400 mb-2">
+                      {item.source} • {item.date}
                     </div>
-                  ) : (
-                    <div className="relative pt-[56.25%]">
-                      <img
-                        src="/images/indianexpress.png"
-                        alt={item.title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
-                    </div>
-                  )}
-
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      {item.type === "video" ? (
-                        <div className="bg-red-600 text-white px-3 py-1 rounded-full flex items-center space-x-1">
-                          <Youtube size={16} />
-                          <span className="text-sm">Video</span>
-                        </div>
-                      ) : (
-                        <div className="bg-blue-600 text-white px-3 py-1 rounded-full flex items-center space-x-1">
-                          <Newspaper size={16} />
-                          <span className="text-sm">News</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                    {item.description && (
-                      <p className="text-gray-300 mb-4">{item.description}</p>
-                    )}
-                    {item.source && (
-                      <div className="text-gray-400 mb-4">
-                        {item.source} • {item.date}
-                      </div>
-                    )}
                     <a
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors"
                     >
-                      <span>View Original</span>
+                      <span className="text-sm">View Original</span>
                       <ExternalLink size={16} />
                     </a>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </div>
+          </div>
 
-            {/* Mobile Scroll Progress Dots */}
-            <div className="flex md:hidden justify-center gap-2 mt-4">
-              {recognitions.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === 0 ? "bg-primary" : "bg-gray-600"
-                  }`}
-                />
-              ))}
+          {/* Video Gallery */}
+          <div className="relative group">
+            <div className="flex overflow-x-auto space-x-6 pb-6 snap-x snap-mandatory scroll-smooth scrollbar-hide">
+              {recognitions
+                .filter(item => item.type === "video")
+                .map(item => (
+                  <motion.div
+                    key={item.videoId}
+                    variants={itemVariants}
+                    className="flex-none w-full md:w-[600px] snap-center bg-dark/80 backdrop-blur-sm rounded-xl overflow-hidden card-hover"
+                  >
+                    <div className="relative pt-[56.25%]">
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={`https://www.youtube.com/embed/${item.videoId}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </motion.div>
+                ))}
             </div>
           </div>
         </motion.div>
